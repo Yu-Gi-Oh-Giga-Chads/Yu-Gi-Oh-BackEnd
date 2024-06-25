@@ -4,6 +4,7 @@ using DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(YuGiOhDbContext))]
-    partial class YuGiOhDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240620071657_UserMigration")]
+    partial class UserMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,7 +90,12 @@ namespace DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Decks");
                 });
@@ -129,19 +137,11 @@ namespace DataLayer.Migrations
                     b.ToTable("CardDeck");
                 });
 
-            modelBuilder.Entity("DeckUser", b =>
+            modelBuilder.Entity("BusinessLayer.Deck", b =>
                 {
-                    b.Property<int>("DecksId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DecksId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("DeckUser");
+                    b.HasOne("BusinessLayer.User", null)
+                        .WithMany("Decks")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("CardDeck", b =>
@@ -159,19 +159,9 @@ namespace DataLayer.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DeckUser", b =>
+            modelBuilder.Entity("BusinessLayer.User", b =>
                 {
-                    b.HasOne("BusinessLayer.Deck", null)
-                        .WithMany()
-                        .HasForeignKey("DecksId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BusinessLayer.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Decks");
                 });
 #pragma warning restore 612, 618
         }

@@ -24,5 +24,28 @@ namespace DataLayer
         public DbSet<Card> Cards { get; set; }
         public DbSet<Deck> Decks { get; set; }
         public DbSet<User> Users { get; set; }
+
+        public override int SaveChanges()
+        {
+            using (var transaction = Database.BeginTransaction())
+            {
+                try
+                {
+                    Database.ExecuteSqlRaw("SET IDENTITY_INSERT Decks ON");
+
+                    var result = base.SaveChanges();
+
+                    Database.ExecuteSqlRaw("SET IDENTITY_INSERT Decks OFF");
+
+                    transaction.Commit();
+                    return result;
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+        }
     }
 }

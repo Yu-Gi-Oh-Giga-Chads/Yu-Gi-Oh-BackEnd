@@ -21,10 +21,20 @@ namespace BusinessLayer
         }
 
         public User(string? userName, string? email, string? password)
+            :this()
         {
             UserName = userName;
             Email = email;
             Password = password;
+        }
+
+        public User(User user)
+            :this()
+        {
+            this.Id = user.Id;
+            this.UserName = user.UserName;
+            this.Email = user.Email;
+            this.Password = user.Password;
         }
     }
 }

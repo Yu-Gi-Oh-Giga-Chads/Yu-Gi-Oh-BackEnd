@@ -12,18 +12,18 @@ namespace BusinessLayer
         [Key]
         public int Id { get; set; }
 
-        [Required]
         public string Name { get; set; }
 
-        [Required]
         public List<Card> Cards { get; set; }
         public List<int> Copies { get; set; }
+        public List<User> Users { get; set; }
 
         public DateTime DateCreated { get; set; }
         public DateTime LastEdited { get; set; }
 
         public Deck()
         {
+            Users = new List<User>();
             Cards = new List<Card>();
             Copies = new List<int>();
             DateCreated = DateTime.Now;

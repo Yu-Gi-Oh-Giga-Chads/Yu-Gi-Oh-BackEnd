@@ -3,4 +3,20 @@
 GET {{Yu_Gi_Oh_BackEnd_HostAddress}}/weatherforecast/
 Accept: application/json
 
+
 ###
+GET https://localhost:7023/users
+
+###
+GET https://localhost:7023/userinfo/dani
+
+
+
+###
+POST https://localhost:7023/adddeck
+Content-Type: application/json
+
+{
+  "Deckname": "Peshu1",
+  "Username": "dani"
+}

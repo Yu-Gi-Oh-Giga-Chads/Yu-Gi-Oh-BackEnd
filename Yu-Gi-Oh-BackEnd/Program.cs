@@ -1,3 +1,8 @@
+using BusinessLayer;
+using Microsoft.AspNetCore.Http.HttpResults;
+using System.Text.Json.Nodes;
+using Microsoft.AspNetCore.Cors;
+using System.Globalization;
 
 namespace Yu_Gi_Oh_BackEnd
 {
@@ -5,8 +10,6 @@ namespace Yu_Gi_Oh_BackEnd
     {
         public static void Main(string[] args)
         {
-            //var config = new HttpSelfHostConfiguration("http://localhost:8080");
-
             var builder = WebApplication.CreateBuilder(args);
 
             var MyAllowSpecificOrigins = "AllowAll";
@@ -16,28 +19,21 @@ namespace Yu_Gi_Oh_BackEnd
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                     policy =>
                     {
-                        policy.WithOrigins("*").AllowAnyHeader()
-                            .AllowAnyMethod();
+                        policy.AllowAnyOrigin()
+                              .AllowAnyHeader()
+                              .AllowAnyMethod();
                     });
             });
 
-            // Add services to the container.
-
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            //builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
             app.UseHttpsRedirection();
+
+            app.UseCors(MyAllowSpecificOrigins); 
 
             app.UseAuthorization();
 

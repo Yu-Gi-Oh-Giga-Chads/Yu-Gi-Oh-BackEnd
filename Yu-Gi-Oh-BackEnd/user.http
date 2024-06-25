@@ -1,0 +1,35 @@
+###
+GET https://localhost:7023/users
+
+###
+GET https://localhost:7023/userinfo
+Content-Type: application/json
+
+{
+  "Username": "dani",
+  "Password": "dani"
+}
+
+###
+GET https://localhost:7023/userdecks
+Content-Type: application/json
+
+{
+  "username": "Alex",
+  "email": "dsad",
+  "password": "adf"
+}
+
+
+###
+POST http://localhost:5258/adduser
+Content-Type: application/json
+
+{
+  "username": "Dani",
+  "email": "dsad",
+  "password": "adf"
+}
+
+###
+GET https://localhost:7023/users
